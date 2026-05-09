@@ -79,6 +79,15 @@ pipeline {
       }
     }
 
+    stage('Verify Git Repo') {
+    steps {
+        sh '''
+            pwd
+            ls -la
+            find / -name ".git" 2>/dev/null | head
+        '''
+    }
+}
     stage('Update Deployment File') {
 
       environment {
