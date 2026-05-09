@@ -91,6 +91,7 @@ pipeline {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
 
           sh '''
+            cd ${WORKSPACE}
             git config user.email "abineshk0125@gmail.com"
             git config user.name "abineshk0125-sys"
 
