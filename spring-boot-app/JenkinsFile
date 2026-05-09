@@ -90,30 +90,34 @@ pipeline {
 }
     stage('Update Deployment File') {
 
-      environment {
+    environment {
         GIT_REPO_NAME = "Jenkins-projects"
         GIT_USER_NAME = "abineshk0125-sys"
-      }
-
-      steps {
-
-        withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-
-          sh '''
-            cd ${WORKSPACE}
-            git config user.email "abineshk0125@gmail.com"
-            git config user.name "abineshk0125-sys"
-
-            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" spring-boot-app-manifests/deployment.yml
-
-            git add spring-boot-app-manifests/deployment.yml
-
-            git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes to commit"
-
-            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git HEAD:main
-          '''
-        }
-      }
     }
-  }
+
+    steps {
+
+        dir("${WORKSPACE}") {
+
+            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+
+                sh '''
+                    pwd
+                    ls -la
+                    git status
+
+                    git config user.email "abineshk0125@gmail.com"
+                    git config user.name "abineshk0125-sys"
+
+                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" spring-boot-app-manifests/deployment.yml
+
+                    git add spring-boot-app-manifests/deployment.yml
+
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes to commit"
+
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git HEAD:main
+                '''
+            }
+        }
+    }
 }
