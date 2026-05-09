@@ -104,6 +104,9 @@ pipeline {
                 sh '''
                     pwd
                     ls -la
+
+                    git config --global --add safe.directory /var/lib/jenkins/workspace/spring-boot
+
                     git status
 
                     git config user.email "abineshk0125@gmail.com"
